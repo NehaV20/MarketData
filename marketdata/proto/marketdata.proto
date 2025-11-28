@@ -1,0 +1,145 @@
+syntax = "proto3";
+option go_package = "./md";
+
+enum ExchangeSegment {
+   NONE = 0;
+   NSECM = 1;
+   NSEFO = 2;
+   NSECD = 3;
+   NSECO = 4;
+   BSECM = 11;
+   BSEFO = 12;
+   BSECD = 13;
+   BSECO = 14;
+   NCDEX = 21;
+   MCXFO = 31;
+}
+// IncrementalUpdateMessage
+
+message IncrementalUpdateMessage {
+   repeated MDEntries MDEntriesList = 11;
+}
+
+message IndexData {
+   uint64 InstrumentID = 10;
+   ExchangeSegment ExchangeSegment = 11;
+   uint32 ExchangeInstrumentID = 12;
+   string IndexName = 13;
+   int64 TimeStamp = 14;
+   double Last = 15;
+   double Open = 16;
+   double High = 17;
+   double Low = 18;
+   double Close = 19;
+   double YearlyHigh = 20;
+   double YearlyLow = 21;
+   uint32 NetChangeIndicator = 22;
+}
+message IndexDataListMessage {
+   repeated IndexData IndexDataList = 401;
+}
+
+//IndexDataMessage
+
+message IndexDataMessage {
+   IndexData IndexData = 1;
+}
+
+
+
+message MDEntries {
+   int32 MDUpdateAction = 1;
+   int32 MDEntryType = 2;
+   uint64 InstrumentID = 3;
+   ExchangeSegment ExchangeSegment = 4;
+   uint32 ExchangeInstrumentID = 5;
+   string InstrumentName = 6;
+   double MDEntryPrice = 7;
+   int32 MDEntrySize = 8;
+   int32 MDEntryTime = 9;
+   int32 MDEntryPosition = 10;
+   int64 OI = 11;
+}
+message MarketDataMessageBase {
+   int32 MessageCode = 1;
+   uint64 ID = 2;
+   int32 MessageSize = 3;
+   oneof subtype {
+      TickDataMessage TickDataMessage = 500;
+      TouchLineDataMessage TouchLineDataMessage = 501;
+      MarketDepthMessage MarketDepthMessage = 502;
+      IndexDataMessage IndexDataMessage = 503;
+      IndexDataListMessage IndexDataListMessage = 504;
+      IncrementalUpdateMessage IncrementalUpdateMessage = 505;
+      TickData TickData = 506;
+   }
+}
+
+//MarketDepthMessage
+message MarketDepthMessage {
+   uint64 InstrumentID = 10;
+   ExchangeSegment ExchangeSegment = 11;
+   uint32 ExchangeInstrumentID = 12;
+   string InstrumentName = 13;
+   int64 TimeStamp = 14;
+   double LTP = 15;
+   int32 LTQ = 16;
+   int64 LTT = 17;
+   double ATP = 18;
+   int64 VTT = 19;
+   int64 TBQ = 20;
+   int64 TSQ = 21;
+   double Open = 22;
+   double High = 23;
+   double Low = 24;
+   double Close = 25;
+   int64 OI = 26;
+   repeated PriceDepthLevel BestBidLevel = 27;
+   repeated PriceDepthLevel BestAskLevel = 28;
+}
+message PriceDepthLevel {
+   int32 Qty = 1;
+   double Price = 2;
+   int32 Orders = 3;
+}
+message TickData {
+   uint64 InstrumentID = 1;
+   ExchangeSegment ExchangeSegment = 2;
+   uint32 ExchangeInstrumentID = 3;
+   string InstrumentName = 4;
+   double LTP = 5;
+   int32 LTQ = 6;
+   int64 LTT = 7;
+   int32 Flag = 8;
+}
+message TickDataMessage {
+   uint64 InstrumentID = 10;
+   ExchangeSegment ExchangeSegment = 11;
+   uint32 ExchangeInstrumentID = 12;
+   string InstrumentName = 13;
+   int64 TimeStamp = 14;
+   double LTP = 15;
+   int32 LTQ = 16;
+   int64 LTT = 17;
+}
+message TouchLineDataMessage {
+   uint64 InstrumentID = 10;
+   ExchangeSegment ExchangeSegment = 11;
+   uint32 ExchangeInstrumentID = 12;
+   string InstrumentName = 13;
+   int64 TimeStamp = 14;
+   double LTP = 15;
+   int32 LTQ = 16;
+   int64 LTT = 17;
+   double ATP = 18;
+   int64 VTT = 19;
+   int64 TBQ = 20;
+   int64 TSQ = 21;
+   double Open = 22;
+   double High = 23;
+   double Low = 24;
+   double Close = 25;
+   int64 OI = 26;
+   repeated PriceDepthLevel BestBidLevel = 27;
+   repeated PriceDepthLevel BestAskLevel = 28;
+}
